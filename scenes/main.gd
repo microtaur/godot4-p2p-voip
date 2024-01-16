@@ -23,6 +23,7 @@ func _ready():
 	$Client.multiplayer.peer_connected.connect(_peer_connected)
 	$Client.multiplayer.peer_disconnected.connect(_peer_disconnected)
 	$Client.lobby_sealed.connect(_sealed)
+	$Client.lobby_already_exists.connect(_lobby_exists)
 
 	%Nickname.text = names.pick_random()
 	%ChatInput.text_submitted.connect(_send_text)
@@ -103,6 +104,10 @@ func _seal() -> void:
 
 func _sealed() -> void:
 	%ChatBox.append_text("[color=#dd0000]The lobby has been sealed.[/color]\n")
+
+func _lobby_exists() -> void:
+	%ErrorBox.popup()
+	_quit()
 
 
 func _send_text(text: String) -> void:

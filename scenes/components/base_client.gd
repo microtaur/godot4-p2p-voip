@@ -6,6 +6,7 @@ signal disconnected
 signal connection_timeout
 signal lobby_joined(lobby)
 signal lobby_sealed
+signal lobby_already_exists
 signal peer_connected(id)
 signal peer_disconnected(id)
 signal offer_received(id, offer)
@@ -22,7 +23,7 @@ enum Message {
 	CANDIDATE,
 	SEAL,
 	CREATE_LOBBY,
-	GET_PEERS,
+	LOBBY_ALREADY_EXISTS,
 }
 
 @export var server_address := "ws://localhost:9080"
@@ -127,6 +128,8 @@ func _handle_response(r: String) -> bool:
 			offer_received.emit(id, msg.data)
 		Message.ANSWER:
 			answer_received.emit(id, msg.data)
+		Message.LOBBY_ALREADY_EXISTS:
+			lobby_already_exists.emit()
 		Message.CANDIDATE:
 			var candidate: PackedStringArray = msg.data.split("\n", false)
 			if candidate.size() != 3:
@@ -154,10 +157,6 @@ func send_offer(id, offer) -> int:
 
 func send_answer(id, answer) -> int:
 	return _send_msg(Message.ANSWER, id, answer)
-
-
-func fetch_peers() -> void:
-	_send_msg(Message.GET_PEERS, 0)
 
 
 func _send_msg(type: int, id: int, data:="") -> int:

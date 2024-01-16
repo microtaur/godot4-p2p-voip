@@ -155,6 +155,12 @@ auto_height = true
 layout_mode = 2
 text = "Connect"
 
+[node name="ErrorBox" type="AcceptDialog" parent="ConnectionPanel"]
+unique_name_in_owner = true
+initial_position = 1
+size = Vector2i(178, 100)
+dialog_text = "Lobby already exists!"
+
 [node name="Lobby" type="Panel" parent="."]
 unique_name_in_owner = true
 visible = false

@@ -1,0 +1,287 @@
+[gd_scene load_steps=8 format=3 uid="uid://og24s8x31jlk"]
+
+[ext_resource type="Script" path="res://scenes/main.gd" id="1_pamxo"]
+[ext_resource type="Script" path="res://scenes/components/client.gd" id="2_tbxix"]
+[ext_resource type="Script" path="res://scenes/components/voice.gd" id="3_kx4lw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c71fa"]
+content_margin_left = 5.0
+bg_color = Color(0.207843, 0.207843, 0.207843, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s8wqq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h1bda"]
+content_margin_left = 6.0
+content_margin_top = 4.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+bg_color = Color(0.129412, 0.129412, 0.129412, 1)
+border_color = Color(0.129412, 0.129412, 0.129412, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_6q217"]
+mix_rate = 48000.0
+buffer_length = 0.1
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pamxo")
+
+[node name="ConnectionPanel" type="Panel" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(600, 400)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ConnectionPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="ConnectionPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Nickname" type="TextEdit" parent="ConnectionPanel/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_c71fa")
+theme_override_styles/focus = SubResource("StyleBoxFlat_c71fa")
+theme_override_styles/read_only = SubResource("StyleBoxFlat_c71fa")
+placeholder_text = "nickname"
+
+[node name="HSeparator" type="HSeparator" parent="ConnectionPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ConnectionPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ConnectionPanel/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 35)
+layout_mode = 2
+text = "Host game:"
+vertical_alignment = 1
+
+[node name="HostLobby" type="TextEdit" parent="ConnectionPanel/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_c71fa")
+theme_override_styles/focus = SubResource("StyleBoxFlat_c71fa")
+theme_override_styles/read_only = SubResource("StyleBoxFlat_c71fa")
+placeholder_text = "game name"
+
+[node name="Host" type="Button" parent="ConnectionPanel/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+focus_mode = 0
+text = " Host "
+
+[node name="HSeparator3" type="HSeparator" parent="ConnectionPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ConnectionPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ConnectionPanel/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(100, 35)
+layout_mode = 2
+text = "Join game:"
+vertical_alignment = 1
+
+[node name="JoinLobby" type="TextEdit" parent="ConnectionPanel/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_c71fa")
+theme_override_styles/focus = SubResource("StyleBoxFlat_c71fa")
+theme_override_styles/read_only = SubResource("StyleBoxFlat_c71fa")
+placeholder_text = "game name"
+
+[node name="Join" type="Button" parent="ConnectionPanel/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+text = " Join 
+"
+
+[node name="HSeparator2" type="HSeparator" parent="ConnectionPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ConnectionPanel/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="ConnectionPanel/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Available games:"
+
+[node name="ItemList" type="ItemList" parent="ConnectionPanel/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+auto_height = true
+
+[node name="Button" type="Button" parent="ConnectionPanel/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Connect"
+
+[node name="Lobby" type="Panel" parent="."]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(600, 400)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Lobby"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Lobby/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Lobby/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Lobby:"
+vertical_alignment = 1
+
+[node name="LobbyName" type="Label" parent="Lobby/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+vertical_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Lobby/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_s8wqq")
+
+[node name="Start" type="Button" parent="Lobby/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Start game"
+
+[node name="Quit" type="Button" parent="Lobby/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Quit"
+
+[node name="HSeparator" type="HSeparator" parent="Lobby/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Lobby/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Lobby/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Lobby/VBoxContainer/HBoxContainer2/VBoxContainer2"]
+layout_mode = 2
+text = "Chat:"
+
+[node name="ChatBox" type="RichTextLabel" parent="Lobby/VBoxContainer/HBoxContainer2/VBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 13
+theme_override_font_sizes/bold_font_size = 13
+theme_override_font_sizes/italics_font_size = 13
+theme_override_font_sizes/bold_italics_font_size = 13
+theme_override_font_sizes/mono_font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_h1bda")
+bbcode_enabled = true
+
+[node name="ChatInput" type="LineEdit" parent="Lobby/VBoxContainer/HBoxContainer2/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+max_length = 128
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Lobby/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Lobby/VBoxContainer/HBoxContainer2/VBoxContainer"]
+layout_mode = 2
+text = "Players:"
+
+[node name="PlayerList" type="ItemList" parent="Lobby/VBoxContainer/HBoxContainer2/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+auto_height = true
+
+[node name="HSeparator2" type="HSeparator" parent="Lobby/VBoxContainer"]
+layout_mode = 2
+
+[node name="SpeakIndicator" type="Label" parent="Lobby/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Press SPACE to speak"
+
+[node name="Client" type="Node" parent="."]
+script = ExtResource("2_tbxix")
+server_address = "ws://signaling.microtaur.com:9080"
+
+[node name="Voice" type="Control" parent="."]
+anchors_preset = 0
+script = ExtResource("3_kx4lw")
+
+[node name="Player" type="AudioStreamPlayer" parent="Voice"]
+stream = SubResource("AudioStreamGenerator_6q217")
+
+[node name="Recorder" type="AudioStreamPlayer" parent="Voice"]
+autoplay = true
+bus = &"Record"

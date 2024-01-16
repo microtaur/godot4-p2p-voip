@@ -1,0 +1,36 @@
+[gd_resource type="AudioBusLayout" load_steps=5 format=3 uid="uid://bn6585lyd00vb"]
+
+[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_22rxu"]
+resource_name = "Compressor"
+
+[sub_resource type="AudioEffectLimiter" id="AudioEffectLimiter_jou7l"]
+resource_name = "Limiter"
+
+[sub_resource type="AudioEffectCapture" id="AudioEffectCapture_k36fh"]
+resource_name = "Capture"
+
+[sub_resource type="AudioEffectFilter" id="AudioEffectFilter_y65nf"]
+resource_name = "Filter"
+cutoff_hz = 300.0
+
+[resource]
+bus/0/effect/0/effect = SubResource("AudioEffectCompressor_22rxu")
+bus/0/effect/0/enabled = true
+bus/0/effect/1/effect = SubResource("AudioEffectLimiter_jou7l")
+bus/0/effect/1/enabled = true
+bus/1/name = &"Testing"
+bus/1/solo = false
+bus/1/mute = false
+bus/1/bypass_fx = false
+bus/1/volume_db = 0.0
+bus/1/send = &"Master"
+bus/2/name = &"Record"
+bus/2/solo = false
+bus/2/mute = true
+bus/2/bypass_fx = false
+bus/2/volume_db = 0.0
+bus/2/send = &"Testing"
+bus/2/effect/0/effect = SubResource("AudioEffectCapture_k36fh")
+bus/2/effect/0/enabled = true
+bus/2/effect/1/effect = SubResource("AudioEffectFilter_y65nf")
+bus/2/effect/1/enabled = true

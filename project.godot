@@ -17,6 +17,7 @@ config/icon="res://assets/icon.svg"
 
 [audio]
 
+driver/output_latency=50
 driver/enable_input=true
 driver/mix_rate=48000
 

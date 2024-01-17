@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://og24s8x31jlk"]
+[gd_scene load_steps=7 format=3 uid="uid://og24s8x31jlk"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_pamxo"]
 [ext_resource type="Script" path="res://scenes/components/client.gd" id="2_tbxix"]
@@ -21,10 +21,6 @@ corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
-
-[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_6q217"]
-mix_rate = 48000.0
-buffer_length = 0.1
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -284,9 +280,6 @@ server_address = "ws://signaling.microtaur.com:9080"
 [node name="Voice" type="Control" parent="."]
 anchors_preset = 0
 script = ExtResource("3_kx4lw")
-
-[node name="Player" type="AudioStreamPlayer" parent="Voice"]
-stream = SubResource("AudioStreamGenerator_6q217")
 
 [node name="Recorder" type="AudioStreamPlayer" parent="Voice"]
 autoplay = true

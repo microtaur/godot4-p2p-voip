@@ -1,7 +1,5 @@
 extends Node
 
-signal incoming_data(data)
-
 const BUFFER_SIZE := 480
 
 var active := false
@@ -11,6 +9,7 @@ var client: Client = null
 var audio_thread = Thread.new()
 
 var _player_pool := {}
+var _encoder := Opus.new()
 
 func _ready():
 	client = get_parent().get_node("Client")
@@ -24,11 +23,17 @@ func _ready():
 	effect.buffer_length = 0.1
 	effect.clear_buffer()
 
-	audio_thread.start(audio_processing_loop)
+	audio_thread.start(_audio_process, Thread.PRIORITY_HIGH)
 
-func _process_audio() -> void:
-	if has_data() and active:
-		call_deferred("rpc", "play_data", get_data())
+
+func _audio_process():
+	while true:
+		if has_data() and active:
+			var data = get_data()
+			call_deferred("rpc", "play_data", data)
+		else:
+			OS.delay_msec(10)
+
 
 func _update_player_pool() -> void:
 	for p in client.multiplayer.get_peers():
@@ -36,7 +41,8 @@ func _update_player_pool() -> void:
 			continue
 		_player_pool[p] = _create_player()
 
-func _create_player() -> AudioStreamPlayer:
+
+func _create_player() -> Array:
 	var p = AudioStreamPlayer.new()
 	var g = AudioStreamGenerator.new()
 	g.buffer_length = 0.1
@@ -44,46 +50,43 @@ func _create_player() -> AudioStreamPlayer:
 	p.stream = g
 	add_child(p)
 	p.play()
-	return p
+	var decoder = Opus.new()
+	add_child(decoder)
+	return [p, decoder]
+
 
 func _get_generator(id: int) -> AudioStreamGeneratorPlayback:
-	return _player_pool[id].get_stream_playback()
+	return _player_pool[id][0].get_stream_playback()
+
+
+func _get_opus_instance(id: int) -> Opus:
+	return _player_pool[id][1]
+
 
 func start_recording() -> void:
 	active = true
 
+
 func stop_recording() -> void:
 	active = false
+
 
 func has_data() -> bool:
 	return effect.can_get_buffer(BUFFER_SIZE)
 
+
 func get_data() -> PackedFloat32Array:
 	var data = effect.get_buffer(BUFFER_SIZE)
-	return Opus.encode(data)
+	return _encoder.encode(data)
+
 
 func clear_data() -> void:
 	effect.clear_buffer()
 
-@rpc("any_peer", "call_remote", "unreliable_ordered")
+
+@rpc("any_peer", "call_remote", "reliable")
 func play_data(data: PackedFloat32Array) -> void:
 	var id = client.multiplayer.get_remote_sender_id()
 	_update_player_pool()
+	_get_opus_instance(id).decode_and_play(_get_generator(id), data)
 
-	var decoded = Opus.decode(data)
-	for b in range(0, BUFFER_SIZE):
-		_get_generator(id).push_frame(decoded[b])
-
-func audio_processing_loop():
-	var target_frame_time_ms = 1000 / 200.0 # 200 FPS
-	while true:
-		var start_time = Time.get_ticks_msec()
-
-		_process_audio()
-
-		var end_time = Time.get_ticks_msec()
-		var elapsed_time = end_time - start_time
-		var sleep_time = target_frame_time_ms - elapsed_time
-
-		if sleep_time > 0:
-			OS.delay_msec(sleep_time)

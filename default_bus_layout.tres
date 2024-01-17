@@ -1,10 +1,12 @@
 [gd_resource type="AudioBusLayout" load_steps=5 format=3 uid="uid://bn6585lyd00vb"]
 
-[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_22rxu"]
-resource_name = "Compressor"
-
 [sub_resource type="AudioEffectLimiter" id="AudioEffectLimiter_jou7l"]
 resource_name = "Limiter"
+ceiling_db = -0.5
+
+[sub_resource type="AudioEffectAmplify" id="AudioEffectAmplify_er8fu"]
+resource_name = "Amplify"
+volume_db = 10.0
 
 [sub_resource type="AudioEffectCapture" id="AudioEffectCapture_k36fh"]
 resource_name = "Capture"
@@ -14,9 +16,9 @@ resource_name = "Filter"
 cutoff_hz = 300.0
 
 [resource]
-bus/0/effect/0/effect = SubResource("AudioEffectCompressor_22rxu")
+bus/0/effect/0/effect = SubResource("AudioEffectLimiter_jou7l")
 bus/0/effect/0/enabled = true
-bus/0/effect/1/effect = SubResource("AudioEffectLimiter_jou7l")
+bus/0/effect/1/effect = SubResource("AudioEffectAmplify_er8fu")
 bus/0/effect/1/enabled = true
 bus/1/name = &"Testing"
 bus/1/solo = false
